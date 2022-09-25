@@ -6,9 +6,9 @@
   "scripts": {
     "start": "ts-node-dev -- ./src/index.ts",
     "test": "node -e \"console.log('No tests yet!')\"",
-    "lint": "eslint 'src/**/*.{js,ts}'",
-    "prettier": "prettier --list-different 'src/**/*.{js,ts}'",
-    "prettier-write": "prettier --write 'src/**/*.{js,ts}'"
+    "lint": "eslint \"src/**/*.{js,ts}\"",
+    "prettier": "prettier --list-different \"src/**/*.{js,ts}\"",
+    "prettier-write": "prettier --write \"src/**/*.{js,ts}\""
   },
   "dependencies": {
     "axios": "^0.27.2",
