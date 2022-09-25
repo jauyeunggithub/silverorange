@@ -16,6 +16,8 @@ export function App() {
       setRepos(data);
     } catch (error) {
       alert((error as AxiosError)?.message);
+    } finally {
+      setSelectedLanguage('');
     }
   };
 
@@ -41,7 +43,7 @@ export function App() {
           {l}
         </button>
       ))}
-      <button onClick={() => setSelectedLanguage('')}>Clear Filters</button>
+      <button onClick={getData}>Clear Filters</button>
       {repos
         .filter((r: Repo) => {
           if (!selectedLanguage) {
