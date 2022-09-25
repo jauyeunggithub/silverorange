@@ -41,6 +41,7 @@ export function App() {
           {l}
         </button>
       ))}
+      <button onClick={() => setSelectedLanguage('')}>Clear Filters</button>
       {repos
         .filter((r: Repo) => {
           if (!selectedLanguage) {
