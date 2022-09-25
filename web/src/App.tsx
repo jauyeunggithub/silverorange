@@ -1,25 +1,61 @@
 import React from 'react';
-import logo from './logo.svg';
-
+import axios from 'axios';
+import RepoDetails, { Repo } from './RepoDetails';
 import './App.css';
 
+interface AxiosError {
+  message: string;
+}
+
 export function App() {
+  const [repos, setRepos] = React.useState([]);
+  const [selectedLanguage, setSelectedLanguage] = React.useState('');
+  const getData = async () => {
+    try {
+      const { data } = await axios.get('http://localhost:4000/repos');
+      setRepos(data);
+    } catch (error) {
+      alert((error as AxiosError)?.message);
+    }
+  };
+
+  const languages = React.useMemo(() => {
+    const languagesWithDups = repos
+      .map((r: Repo) => {
+        return r.language;
+      })
+      .filter(Boolean);
+    return languagesWithDups.filter(
+      (l, index) => languagesWithDups.indexOf(l) === index
+    );
+  }, [repos]);
+
+  React.useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {languages.map((l) => (
+        <button key={l} onClick={() => setSelectedLanguage(l)}>
+          {l}
+        </button>
+      ))}
+      {repos
+        .filter((r: Repo) => {
+          if (!selectedLanguage) {
+            return true;
+          }
+          return r.language === selectedLanguage;
+        })
+        .sort((a: Repo, b: Repo) => {
+          return (
+            new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+          );
+        })
+        .map((r: Repo) => {
+          return <RepoDetails key={r.id} repo={r} />;
+        })}
     </div>
   );
 }
